@@ -132,7 +132,7 @@ sogo_backend_atexit (void)
    \return MAPISTORE_SUCCESS on success
 */
 static enum mapistore_error
-sogo_backend_init (void)
+sogo_backend_init (const char *backend_name)
 {
   NSAutoreleasePool *pool;
   SOGoProductLoader *loader;
@@ -204,7 +204,7 @@ sogo_backend_init (void)
 */
 
 static enum mapistore_error
-sogo_backend_create_context(TALLOC_CTX *mem_ctx,
+sogo_backend_create_context(TALLOC_CTX *mem_ctx, const char *backend_name,
                             struct mapistore_connection_info *conn_info,
                             struct indexing_context *indexing,
                             const char *uri, void **context_object)
@@ -279,8 +279,10 @@ sogo_backend_create_root_folder (const char *username,
 }
 
 static enum mapistore_error
-sogo_backend_list_contexts(const char *username, struct indexing_context *indexing,
-                           TALLOC_CTX *mem_ctx,
+sogo_backend_list_contexts(TALLOC_CTX *mem_ctx,
+			   const char *backend_name,
+			   const char *username,
+			   struct indexing_context *indexing,
                            struct mapistore_contexts_list **contexts_listp)
 {
   NSAutoreleasePool *pool;
@@ -327,7 +329,7 @@ sogo_backend_list_contexts(const char *username, struct indexing_context *indexi
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
 */
 static enum mapistore_error
-sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
+sogo_context_get_path(TALLOC_CTX *mem_ctx, void *backend_object,
                       uint64_t fmid, char **path)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -360,7 +362,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
 }
 
 static enum mapistore_error
-sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
+sogo_context_get_root_folder(TALLOC_CTX *mem_ctx, void *backend_object,
                              uint64_t fid, void **folder_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -405,7 +407,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static enum mapistore_error
-sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, void **childfolder_object)
+sogo_folder_open_folder(TALLOC_CTX *mem_ctx, void *folder_object, uint64_t fid, void **childfolder_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
