@@ -239,11 +239,13 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx, const char *backend_name,
 }
 
 static enum mapistore_error
-sogo_backend_create_root_folder (const char *username,
-                                 enum mapistore_context_role role,
-                                 uint64_t fid, const char *name,
-                                 // struct indexing_context *indexing,
-                                 TALLOC_CTX *mem_ctx, char **mapistore_urip)
+sogo_backend_create_root_folder(TALLOC_CTX *mem_ctx,
+				const char *backend_name,
+				const char *username,
+                                enum mapistore_context_role role,
+                                uint64_t fid, const char *name,
+                                // struct indexing_context *indexing,
+                                char **mapistore_urip)
 {
   NSAutoreleasePool *pool;
   NSString *userName, *folderName;
